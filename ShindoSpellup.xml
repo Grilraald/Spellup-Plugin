@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<blowtorch xmlversion="2">
+  <plugins>
+    <plugin name="Shindo AutoSpellUp" id="75">
+      <author>Shindo</author>
+      <description><![CDATA[
+        <html>
+          <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>Shindo's Spellup Plugin</title>
+            <style type="text/css">
+              body {
+              color: #999;
+              }
+            </style>
+          </head>
+          <body>
+            <h3>Auto spellup summary </h3>
+            <p>This plugin attempts to recast spells and apply skills as they drop or fail. 
+              It does this even in the middle of combat, which is an issue that will be 
+              worked on.</p>
+            <p><b>.sp on|off</b>  will turn the plugin on and off.</p>
+            <p>In order to keep up todate with skills that have recoveries and you want to 
+              reactivate as soon as the recovery ends please use <b>slist</b>, note the 
+              number for the recovery of your skill and add the skill to the Recovery 
+              list along with it's recovery number, for example quickstab is 50 and 
+              precision is 58</p>
+          </body>
+        </html>
+        ]]>
+      </description>
+      <windows />
+      <aliases />
+      <triggers>
+        <trigger title="spellfail" 
+          pattern="^\{sfail\}(\d+)\,(\d+)\,(\d+)\,([\-0-9]+)$" 
+          regexp="true" sequence="1" group="ReSkill" keepEvaluating="true">
+          <replace fireWhen="always"></replace>
+          <script function="AffectFail" fireWhen="always" />
+          <gag />
+        </trigger>
+        <trigger title="spelloff" 
+          pattern="^\{affoff\}(\d+)$" 
+          regexp="true" sequence="1" group="ReSkill" keepEvaluating="true">
+          <replace fireWhen="always"></replace>
+          <script function="AffectEnds" fireWhen="always" />
+          <gag />
+        </trigger>
+        <trigger title="recoveryoff" 
+          pattern="^\{recoff\}(\d+)$" 
+          regexp="true" sequence="1" group="ReSkill" keepEvaluating="true">
+          <replace fireWhen="always"></replace>
+          <script function="RecoveryEnds" fireWhen="always" />
+          <gag />
+        </trigger>
+        <trigger title="spellon" 
+          pattern="^\{affon\}(\d+)\,(\d+)" 
+          regex="true" sequence="1" group="SpellsOn" keepEvaluating="true">
+          <replace fireWhen="always"></replace>
+          <script function="AffectOn" fireWhen="always" />
+          <gag />
+        </trigger>
+        <trigger title="status" 
+          pattern="%char.status" 
+          sequence="1">
+          <script function="UpdateStatus" fireWhen="always" />
+        </trigger>
+      </triggers>
+      <timers />
+      <options />
+      <script name="main" execute="true"><![CDATA[
+        Plugin_Dir = "/Shindo_lua"
+        dofile(GetPluginInstallDirectory()..Plugin_Dir.."/Spellup_backend.lua")
+        ]]>
+      </script>
+    </plugin>
+  </plugins>
+</blowtorch>
