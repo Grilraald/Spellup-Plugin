@@ -17,7 +17,9 @@
           <body>
             <h3>Auto spellup summary </h3>
             <ol><b>Instructions for installing</b>
-              <li>After installing you need to add GMCP options to Blowtorch.  </li>
+              <li>Before installing you need to turn spellup tags on. To do this send the 
+                following command to aardwolf: <b>tags spellups on</b></li>
+              <li>Before installing you need to add GMCP options to Blowtorch.  </li>
               <li>Bring up the menu with the menu key in the top right corner </li>
               <li>Select <b>Options</b>, then <b>Service</b>, then <b>GMCP Options</b> </li>
               <li>Pleae make sure <b>Use GMCP</b> is ticked on the right hand side.  </li>
