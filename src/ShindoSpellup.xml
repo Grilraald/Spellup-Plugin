@@ -16,9 +16,19 @@
           </head>
           <body>
             <h3>Auto spellup summary </h3>
+            <ol><b>Instructions for installing</b>
+              <li>After installing you need to add GMCP options to Blowtorch.</li>
+              <li>Bring up the menu with the menu key in the top right corner</li>
+              <li>Select "Options", then "Service", then "GMCP Options"</li>
+              <li>Pleae make sure "Use GMCP" is ticked on the right hand side.</li>
+              <li>Press "Support String" and put "char 1" WITH THE "". If there are any 
+                other options already there then you need a comma between the options.
+                For example: "char 1", "room 1", "comm 1"</li>
+            </ol>
             <p>This plugin attempts to recast spells and apply skills as they drop or fail. 
               It does this even in the middle of combat, which is an issue that will be 
               worked on.</p>
+            <p></p>
             <p><b>.sp on|off</b>  will turn the plugin on and off.</p>
             <p>In order to keep up todate with skills that have recoveries and you want to 
               reactivate as soon as the recovery ends please use <b>slist</b>, note the 
