@@ -1,14 +1,13 @@
 local NotSpell ={
-  -- start with things we dont want to redo
+  -- start with things we dont want to recast
   ["6"]="bad"
   ,["65"]="bad"
   ,["66"]="bad"
   , ["75"]="bad"
   ,["278"]="bad"
   ,["596"]="bad"
-  --,["458"]="bad"
-  -- list of skills we invoke
-  --,["49"]="frenzy" this is the spell not skill, silly me
+  --,["6"]="bad"
+  -- list of skills we invoke, this converts the sn to skill name
   ,["104"]="chameleon"
   ,["120"]="heighten"
   ,["133"]="shadow"
@@ -18,7 +17,7 @@ local NotSpell ={
   ,["554"]="nimble"
   ,["601"]="quickstab"
   ,["615"]="precision"
-  -- ,["306"]="hide"
+  -- ,["104"]="hide"
 }
 
 local Recoveries = {
@@ -41,7 +40,6 @@ function AffectFail(name, line, FailData)
     Note("Failed and we can't queue this ability.\n")
     return
   elseif FailReason == "6" then
-    --Note("Currently fighting, can't activate this ability\n")
     QueueSpell(SN)
   elseif ((Status == "3") or (Status == "8")) then
     CastSpell(SN)
@@ -85,7 +83,6 @@ function UpdateStatus(NewStatus)
       RunQueuedSpells()
     end
   end
-  --Note("status changed\n") 
 end
 
 function ToggleSpellup(NewState)
@@ -118,9 +115,12 @@ end
 function RunQueuedSpells() 
   for i,QueuedSpell in pairs(QueuedSpells) do
     SendToServer(QueuedSpell)
-    --Note(QueuedSpell.."\n")
   end
   QueuedSpells = {}
+end
+
+function OnBackgroundStartup()			
+  Send_GMCP_Packet("request char")
 end
 
 RegisterSpecialCommand("sp", "ToggleSpellup") 
