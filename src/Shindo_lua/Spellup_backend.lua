@@ -76,6 +76,7 @@ function RecoveryEnds(name, line, Recovery)
 end
 
 function UpdateStatus(NewStatus)
+  Note("new status check.\n")
   if NewStatus.state ~= Status then 
     Status = NewStatus.state
     if Status == "3" then
