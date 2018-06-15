@@ -28,6 +28,7 @@ local Recoveries = {
 
 local Status = "0"
 local QueuedSpells = {}
+local DebugMode = 0
 
 function AffectFail(name, line, FailData)
   SN = FailData["1"]
@@ -76,7 +77,10 @@ function RecoveryEnds(name, line, Recovery)
 end
 
 function UpdateStatus(NewStatus)
-  Note("new status check.\n")
+  if DebugMode ~= 0 then 
+    Note(string.format("Checking Status change was: %s now is: %s.\n"),
+    Status, NewStatus.state) 
+  end
   if NewStatus.state ~= Status then 
     Status = NewStatus.state
     if Status == "3" then
@@ -120,10 +124,19 @@ function RunQueuedSpells()
   QueuedSpells = {}
 end
 
+function DebugToggle(NewMode)
+  if tonumber(NewMode) ~= 0 then
+    DebugMode = 1
+  else
+    DebugMode = 0
+  end
+end
+
 function OnBackgroundStartup()			
   Send_GMCP_Packet("request char")
 end
 
+RegisterSpecialCommand("SpellupDebug", "DebugToggle") 
 RegisterSpecialCommand("sp", "ToggleSpellup") 
 Note("Auto Spellup functions installed.\n")
 
