@@ -16,3 +16,7 @@ need a *comma* between the options. For example: "char 1", "room 1", "comm 1"
 ## Aardwolf Installation instructions
 You need to send the following command to the mud to turn spellup tags on: **tags spellups on**  
 Failure to do so will result in the plugin not working as it requires the tags to work.
+
+##Debugging Options
+To help with issues of the status not changing i've added a function to turn debugging on and off.  Debugging is off by default. In order to turn it on type **.SpellupDebug 1**, this will report each time the char.status is sent to the client and might be very spammy. To turn debugging off type **.SpellupDebug 0**.  
+Please note that you need to put a period in front of commands that you send to the plugin.
