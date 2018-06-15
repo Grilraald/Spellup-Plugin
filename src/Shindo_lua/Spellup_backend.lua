@@ -79,8 +79,9 @@ end
 function UpdateStatus(NewStatus)
   if NewStatus.state ~= Status then 
     if (DebugMode ~= 0) and (NewStatus.state ~= nil) then 
+      local newstate = NewStatus.state
       Note(string.format("Checking Status change was: %s now is: %s.\n"),
-      Status, NewStatus.state) 
+      Status, newstate) 
     end
     Status = NewStatus.state
     if Status == "3" then
