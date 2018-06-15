@@ -11,6 +11,7 @@ Before installing you will need to make the following changes to Blowtorch setti
 3. Pleae make sure **Use GMCP** is ticked on the right hand side.
 4. Press **Support String** and put "char 1" **WITH THE ""**. If there are any other options already there then you 
 need a *comma* between the options. For example: "char 1", "room 1", "comm 1"
+5. Restart your aardwolf session. you do not need to quit, you can use the menu quit option then sign in again.
 
 ## Aardwolf Installation instructions
 You need to send the following command to the mud to turn spellup tags on: **tags spellups on**  
