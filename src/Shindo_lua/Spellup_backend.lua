@@ -78,7 +78,7 @@ end
 
 function UpdateStatus(NewStatus)
   if NewStatus.state ~= Status then 
-    if DebugMode ~= 0 then 
+    if (DebugMode ~= 0) and (NewStatus.state ~= nil) then 
       Note(string.format("Checking Status change was: %s now is: %s.\n"),
       Status, NewStatus.state) 
     end
