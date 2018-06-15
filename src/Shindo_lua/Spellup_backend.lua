@@ -77,11 +77,11 @@ function RecoveryEnds(name, line, Recovery)
 end
 
 function UpdateStatus(NewStatus)
-  if DebugMode ~= 0 then 
-    Note(string.format("Checking Status change was: %s now is: %s.\n"),
-    Status, NewStatus.state) 
-  end
   if NewStatus.state ~= Status then 
+    if DebugMode ~= 0 then 
+      Note(string.format("Checking Status change was: %s now is: %s.\n"),
+      Status, NewStatus.state) 
+    end
     Status = NewStatus.state
     if Status == "3" then
       Note("Able to now activate queued spells and skills\n")
