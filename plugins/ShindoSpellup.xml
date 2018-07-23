@@ -67,7 +67,7 @@
         </trigger>
         <trigger title="spellon" 
           pattern="^\{affon\}(\d+)\,(\d+)" 
-          regex="true" sequence="1" group="SpellsOn" keepEvaluating="true">
+          regexp="true" sequence="1" group="SpellsOn" keepEvaluating="true">
           <replace fireWhen="always"></replace>
           <script function="AffectOn" fireWhen="always" />
           <gag />

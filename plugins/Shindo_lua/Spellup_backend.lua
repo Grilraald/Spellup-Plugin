@@ -21,7 +21,8 @@ local NotSpell ={
 }
 
 local Recoveries = {
-  ["50"] = "quickstab"
+  ["13"] = "c 513" --huntmaster
+  ,["50"] = "quickstab"
   ,["58"] = "precision"
   --,["50"] = ""
 }
@@ -63,8 +64,10 @@ function AffectEnds(name, line, SkillNum)
 end
 
 function AffectOn(name, line, SkillNum)
+  --[[
   Note("Acknowledge casting of "..SkillNum["1"]
   ..", duration is "..SkillNum["2"].." seconds\n")
+  --]]
 end
 
 function RecoveryEnds(name, line, Recovery)
