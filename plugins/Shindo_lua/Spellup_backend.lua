@@ -47,6 +47,21 @@ local Recoveries = {
   --,["50"] = ""
 }
 
+local failureTable = {
+  ["1"] ="Regular fail, lost concentration.\n",
+  ["2"] ="Already affected.\n",
+  ["3"] ="Cast blocked by a recovery.",
+  ["4"] ="Not enough mana.\n",
+  ["5"] ="You are in a nocast room.\n",
+  ["6"] ="Fighting or other 'can't concentrate'\n",
+  ["7"] ="NOT USED\n",
+  ["8"] ="You don't know the spell.\n",
+  ["9"] ="You tried to cast self only on other.\n",
+  ["10"] ="You are resting / sitting.\n",
+  ["11"] ="Skill/Spell has been disabled.\n",
+  ["12"] ="Not enough moves.\n",
+}
+
 local Status = "0"
 local QueuedSpells = {}
 local DebugMode = 0
@@ -57,10 +72,10 @@ function AffectFail(name, line, FailData)
   FailReason = FailData["3"]
   Recovery = FailData["4"]
   if NotSpell[SN] == "bad" or 
-    (FailReason ~= "6" and FailReason ~= "10") or
+    (FailReason ~= "6" and FailReason ~= "10" and FailReason ~= "1") or
     Target == "1" then
     Note(string.format("%sFailed and we can't queue this ability!%s\n", dred, dwhite))
-    Note(string.format("%sFailReason is:%s%s\n", bwhite, tostring(FailReason), dwhite))
+    Note(string.format("%sFailReason is: %s%s%s\n", dwhite, bwhite, failureTable[FailReason], dwhite))
     return
   elseif FailReason == "6" then
     QueueSpell(SN)
