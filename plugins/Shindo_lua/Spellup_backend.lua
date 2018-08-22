@@ -1,4 +1,4 @@
-i-- Colour Stuff
+-- Colour Stuff
 local ansi = "\27["
 local dred = "\27[0;31m"
 local dgreen = "\27[0;32m"
