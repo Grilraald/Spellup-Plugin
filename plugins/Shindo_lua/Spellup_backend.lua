@@ -3,9 +3,12 @@ local NotSpell ={
   ["6"]="bad"
   ,["65"]="bad"
   ,["66"]="bad"
-  , ["75"]="bad"
+  ,["75"]="bad"
+  ,["145"]="bad"
   ,["278"]="bad"
+  ,["288"]="bad"
   ,["596"]="bad"
+  ,["614"]="bad"
   --,["6"]="bad"
   -- list of skills we invoke, this converts the sn to skill name
   ,["104"]="chameleon"
@@ -17,7 +20,7 @@ local NotSpell ={
   ,["554"]="nimble"
   ,["601"]="quickstab"
   ,["615"]="precision"
-  -- ,["104"]="hide"
+  -- ,["104"]="chameleon"
 }
 
 local Recoveries = {
@@ -65,8 +68,12 @@ end
 
 function AffectOn(name, line, SkillNum)
   --[[
-  Note("Acknowledge casting of "..SkillNum["1"]
-  ..", duration is "..SkillNum["2"].." seconds\n")
+  local spelltime = SkillNum["2"]
+  local hours = spelltime / 3600
+  local minutes = (spelltime - (60 * hours)) / 60
+  local seconds = (spelltime % 60) % 60
+  Note(string.format("Acknowledge casting of %s, it will last for %2dh%02dm%02ds\n",
+  SkillNum["1"], hours, minutes, seconds))
   --]]
 end
 

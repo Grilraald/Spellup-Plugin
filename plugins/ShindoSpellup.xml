@@ -25,7 +25,7 @@
               <li>Pleae make sure <b>Use GMCP</b> is ticked on the right hand side.  </li>
               <li>Press <b>Support String</b> and put "char 1" <b>WITH THE ""</b>. If there are any 
                 other options already there then you need a <i>comma</i> between the options.
-                For example: "char 1", "room 1", "comm 1" </li>
+                For example: <b>"char 1", "room 1", "comm 1"</b> </li>
             </ol>
             <p>This plugin attempts to recast spells and apply skills as they drop or fail. 
               It does this even in the middle of combat, which is an issue that will be 
