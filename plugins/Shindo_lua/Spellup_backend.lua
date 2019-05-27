@@ -16,50 +16,51 @@ local bcyan = "\27[36;1m"
 local bwhite = "\27[37;1m"
 
 local NotSpell ={
-  -- start with things we dont want to recast
-  ["6"]="bad"
-  ,["65"]="bad"
-  ,["66"]="bad"
-  ,["75"]="bad"
-  ,["145"]="bad"
-  ,["278"]="bad"
-  ,["288"]="bad"
-  ,["596"]="bad"
-  ,["614"]="bad"
-  --,["6"]="bad"
-  -- list of skills we invoke, this converts the sn to skill name
-  ,["104"]="chameleon"
-  ,["120"]="heighten"
-  ,["133"]="shadow"
-  ,["211"]="berserk"
-  ,["306"]="hide"
-  ,["311"]="sneak"
-  ,["554"]="nimble"
-  ,["601"]="quickstab"
-  ,["615"]="precision"
-  -- ,["104"]="chameleon"
+	-- start with things we dont want to recast
+	["6"]="bad"
+	,["65"]="bad"
+	,["66"]="bad"
+	,["75"]="bad"
+	,["145"]="bad"
+	,["278"]="bad"
+	,["288"]="bad"
+	,["596"]="bad"
+	,["614"]="bad"
+	--,["6"]="bad"
+	-- list of skills we invoke, this converts the sn to skill name
+	,["104"]="chameleon"
+	,["120"]="heighten"
+	,["133"]="shadow"
+	,["211"]="berserk"
+	,["306"]="hide"
+	,["311"]="sneak"
+	,["496"]="aggrandize"
+	,["554"]="nimble"
+	,["601"]="quickstab"
+	,["615"]="precision"
+	-- ,["104"]="chameleon"
 }
 
 local Recoveries = {
-  ["13"] = "c 513" --huntmaster
-  ,["50"] = "quickstab"
-  ,["58"] = "precision"
-  --,["50"] = ""
+	["13"] = "c 513" --huntmaster
+	,["50"] = "quickstab"
+	,["58"] = "precision"
+	--,["50"] = ""
 }
 
 local failureTable = {
-  ["1"] ="Regular fail, lost concentration.\n",
-  ["2"] ="Already affected.\n",
-  ["3"] ="Cast blocked by a recovery.",
-  ["4"] ="Not enough mana.\n",
-  ["5"] ="You are in a nocast room.\n",
-  ["6"] ="Fighting or other 'can't concentrate'\n",
-  ["7"] ="NOT USED\n",
-  ["8"] ="You don't know the spell.\n",
-  ["9"] ="You tried to cast self only on other.\n",
-  ["10"] ="You are resting / sitting.\n",
-  ["11"] ="Skill/Spell has been disabled.\n",
-  ["12"] ="Not enough moves.\n",
+	["1"] ="Regular fail, lost concentration.\n",
+	["2"] ="Already affected.\n",
+	["3"] ="Cast blocked by a recovery.",
+	["4"] ="Not enough mana.\n",
+	["5"] ="You are in a nocast room.\n",
+	["6"] ="Fighting or other 'can't concentrate'\n",
+	["7"] ="NOT USED\n",
+	["8"] ="You don't know the spell.\n",
+	["9"] ="You tried to cast self only on other.\n",
+	["10"] ="You are resting / sitting.\n",
+	["11"] ="Skill/Spell has been disabled.\n",
+	["12"] ="Not enough moves.\n",
 }
 
 local Status = "0"
@@ -67,127 +68,127 @@ local QueuedSpells = {}
 local DebugMode = 0
 
 function AffectFail(name, line, FailData)
-  SN = FailData["1"]
-  Target = FailData["2"]
-  FailReason = FailData["3"]
-  Recovery = FailData["4"]
-  if NotSpell[SN] == "bad" or 
-    (FailReason ~= "6" and FailReason ~= "10" and FailReason ~= "1") or
-    Target == "1" then
-    Note(string.format("%sFailed and we can't queue this ability!%s\n", dred, dwhite))
-    Note(string.format("%sFailReason is: %s%s%s\n", dwhite, bwhite, failureTable[FailReason], dwhite))
-    return
-  elseif FailReason == "6" then
-    QueueSpell(SN)
-  elseif ((Status == "3") or (Status == "8")) then
-    CastSpell(SN)
-  else
-    Note(string.format("%sQueueing that for later%s\n", bwhite, dwhite))
-    QueueSpell(SN)
-  end
+	SN = FailData["1"]
+	Target = FailData["2"]
+	FailReason = FailData["3"]
+	Recovery = FailData["4"]
+	if NotSpell[SN] == "bad" or
+		(FailReason ~= "6" and FailReason ~= "10" and FailReason ~= "1") or
+		Target == "1" then
+		Note(string.format("%sFailed and we can't queue this ability!%s\n", dred, dwhite))
+		Note(string.format("%sFailReason is: %s%s%s\n", dwhite, bwhite, failureTable[FailReason], dwhite))
+		return
+	elseif FailReason == "6" then
+		QueueSpell(SN)
+	elseif ((Status == "3") or (Status == "8")) then
+		CastSpell(SN)
+	else
+		Note(string.format("%sQueueing that for later%s\n", bwhite, dwhite))
+		QueueSpell(SN)
+	end
 
 end
 
 function AffectEnds(name, line, SkillNum)
-  SN = SkillNum["1"]
-  if NotSpell[SN] == "bad" then
-    return
-  elseif ((Status == "3") or (Status == "8")) then
-    CastSpell(SN)
-  else
-    Note(string.format("%sQueueing that for later%s\n", bwhite, dwhite))
-    QueueSpell(SN)
-  end
+	SN = SkillNum["1"]
+	if NotSpell[SN] == "bad" then
+		return
+	elseif ((Status == "3") or (Status == "8")) then
+		CastSpell(SN)
+	else
+		Note(string.format("%sQueueing that for later%s\n", bwhite, dwhite))
+		QueueSpell(SN)
+	end
 
 end
 
 function AffectOn(name, line, SkillNum)
-  --[[
-  local spelltime = SkillNum["2"]
-  local hours = spelltime / 3600
-  local minutes = (spelltime - (60 * hours)) / 60
-  local seconds = (spelltime % 60) % 60
-  Note(string.format("Acknowledge casting of %s, it will last for %2dh%02dm%02ds\n",
-  SkillNum["1"], hours, minutes, seconds))
-  --]]
+	--[[
+	local spelltime = SkillNum["2"]
+	local hours = spelltime / 3600
+	local minutes = (spelltime - (60 * hours)) / 60
+	local seconds = (spelltime % 60) % 60
+	Note(string.format("Acknowledge casting of %s, it will last for %2dh%02dm%02ds\n",
+	SkillNum["1"], hours, minutes, seconds))
+	--]]
 end
 
 function RecoveryEnds(name, line, Recovery)
-  Skill = Recovery["1"]
-  if Skill ~= nil then
-    SendToServer(Skill)
-  else
-    Note(string.format("%sWe have no way to handle this recovery: %s%s%s\n", dred, bred, Skill, dwhite))
-  end
+	Skill = Recovery["1"]
+	if Skill ~= nil then
+		SendToServer(Skill)
+	else
+		Note(string.format("%sWe have no way to handle this recovery: %s%s%s\n", dred, bred, Skill, dwhite))
+	end
 
 end
 
 function UpdateStatus(NewStatus)
-  if NewStatus.state ~= Status then 
-    if DebugMode ~= 0 then 
-      Note(string.format("%sChecking Status Change was: %s%s %snow is: %s%s.%s\n",
-      dyellow, byellow, Status, dyellow, byellow, NewStatus.state, dwhtie))
-    end
-    Status = NewStatus.state
-    if Status == "3" then
-      Note(string.format("%sAble to now activate queued spells and skills.%s\n", bgreen, dwhite))
-      RunQueuedSpells()
-    end
+	if NewStatus.state ~= Status then
+		if DebugMode ~= 0 then
+			Note(string.format("%sChecking Status Change was: %s%s %snow is: %s%s.%s\n",
+			dyellow, byellow, Status, dyellow, byellow, NewStatus.state, dwhtie))
+		end
+		Status = NewStatus.state
+		if Status == "3" then
+			Note(string.format("%sAble to now activate queued spells and skills.%s\n", bgreen, dwhite))
+			RunQueuedSpells()
+		end
 
-  end
+	end
 
 end
 
 function ToggleSpellup(NewState)
-  NewState = string.lower(NewState)
-  if (NewState == "off") then 
-    State = false
-    Note(string.format("%sTurning spellup triggers off!%s\n", bred, dwhite))
-  else
-    State = true
-  end
+	NewState = string.lower(NewState)
+	if (NewState == "off") then
+		State = false
+		Note(string.format("%sTurning spellup triggers off!%s\n", bred, dwhite))
+	else
+		State = true
+	end
 
-  EnableTriggerGroup("ReSkill", State)
-  Note(NewState.. "\n")
+	EnableTriggerGroup("ReSkill", State)
+	Note(NewState.. "\n")
 end
 
 function QueueSpell(SN)
-  if NotSpell[SN] ~= nil then
-    table.insert(QueuedSpells,NotSpell[SN])
-  else
-    table.insert(QueuedSpells,"c "..SN)
-  end
+	if NotSpell[SN] ~= nil then
+		table.insert(QueuedSpells,NotSpell[SN])
+	else
+		table.insert(QueuedSpells,"c "..SN)
+	end
 
 end
 
 function CastSpell(SN)
-  if NotSpell[SN] ~= nil then
-    SendToServer(NotSpell[SN])
-  else
-    SendToServer("c "..SN)
-  end
+	if NotSpell[SN] ~= nil then
+		SendToServer(NotSpell[SN])
+	else
+		SendToServer("c "..SN)
+	end
 
 end
 
-function RunQueuedSpells() 
-  for i,QueuedSpell in pairs(QueuedSpells) do
-    SendToServer(QueuedSpell)
-  end
+function RunQueuedSpells()
+	for i,QueuedSpell in pairs(QueuedSpells) do
+		SendToServer(QueuedSpell)
+	end
 
-  QueuedSpells = {}
+	QueuedSpells = {}
 end
 
 function DebugToggle(NewMode)
-  if tonumber(NewMode) ~= 0 then
-    DebugMode = 1
-  else
-    DebugMode = 0
-  end
+	if tonumber(NewMode) ~= 0 then
+		DebugMode = 1
+	else
+		DebugMode = 0
+	end
 
 end
 
 function OnBackgroundStartup()
-  Send_GMCP_Packet("request char")
+	Send_GMCP_Packet("request char")
 end
 
 RegisterSpecialCommand("SpellupDebug", "DebugToggle")
